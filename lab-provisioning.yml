@@ -1,0 +1,136 @@
+---
+- name: Lab Provisioning
+  hosts: az-workstation
+  tasks:
+  - name: 'Create {{ resourcegroup_name }} resource group'
+    azure.azcollection.azure_rm_resourcegroup:
+      name: '{{ resourcegroup_name }}'
+      location: westus
+      state: present
+
+  - name: 'Create {{ network_name }} virtual network'
+    azure.azcollection.azure_rm_virtualnetwork:
+      name: '{{ network_name }}'
+      resource_group: '{{ resourcegroup_name }}'
+      purge_address_prefixes: yes
+      address_prefixes_cidr: '10.1.0.0/16'
+
+  - name: 'Create {{ controller_nsg_name }}'
+    azure.azcollection.azure_rm_securitygroup:
+      name: '{{ controller_nsg_name }}'
+      resource_group: '{{ resourcegroup_name }}'
+      purge_rules: yes
+      rules:
+      - name: 'AllowSSH'
+        protocol: Tcp
+        source_address_prefix: 0.0.0.0/0
+        destination_port_range: 22
+        access: Allow
+        priority: 100
+        direction: Inbound
+      - name: 'DenyAll'
+        protocol: Tcp
+        source_address_prefix: 0.0.0.0/0
+        destination_port_range: 0-65535
+        access: Deny
+        priority: 103
+        direction: Inbound
+  - name: 'Create {{ controller_subnet_name }}'
+    azure.azcollection.azure_rm_subnet:
+      name: '{{ controller_subnet_name }}'
+      resource_group: '{{ resourcegroup_name }}'
+      virtual_network_name: '{{ network_name }}'
+      address_prefix_cidr: '10.1.1.0/29'
+      security_group_name: '{{ controller_nsg_name }}'
+
+  - name: 'Create {{ host_nsg_name }}'
+    azure.azcollection.azure_rm_securitygroup:
+      name: '{{ host_nsg_name }}'
+      resource_group: '{{ resourcegroup_name }}'
+      purge_rules: yes
+      rules:
+      - name: 'AllowSSH'
+        protocol: Tcp
+        source_address_prefix: 10.1.1.0/29
+        destination_port_range: 22
+        access: Allow
+        priority: 100
+        direction: Inbound
+      - name: 'DenyAll'
+        protocol: Tcp
+        source_address_prefix: 0.0.0.0/0
+        destination_port_range: 0-65535
+        access: Deny
+        priority: 103
+        direction: Inbound
+  - name: 'Create {{ host_subnet_name }}'
+    azure.azcollection.azure_rm_subnet:
+      name: '{{ host_subnet_name }}'
+      resource_group: '{{ resourcegroup_name }}'
+      virtual_network_name: '{{ network_name }}'
+      address_prefix_cidr: '10.1.2.0/28'
+      security_group_name: '{{ host_nsg_name }}' 
+
+  - name: 'Create {{ controller_vm_name }} VM'
+    azure.azcollection.azure_rm_virtualmachine:
+      name: '{{ controller_vm_name }}'
+      resource_group: '{{ resourcegroup_name }}'
+      virtual_network_name: '{{ network_name }}'
+      subnet_name: '{{ controller_subnet_name }}'
+      public_ip_allocation_method: Static
+      admin_username: '{{ admin_un }}'
+      admin_password: '{{ admin_pw }}'
+      vm_size: Standard_B1s
+      image:
+        offer: UbuntuServer
+        publisher: Canonical
+        sku: 18.04-LTS
+        version: latest
+
+  - name: 'Create {{ host_vm_name1 }}'
+    azure.azcollection.azure_rm_virtualmachine:
+      name: '{{ host_vm_name1 }}'
+      resource_group: '{{ resourcegroup_name }}'
+      virtual_network_name: '{{ network_name }}'
+      subnet_name: '{{ host_subnet_name }}'
+      public_ip_allocation_method: Dynamic
+      admin_username: '{{ admin_un }}'
+      admin_password: '{{ admin_pw }}'
+      vm_size: Standard_B1s
+      image:
+        offer: UbuntuServer
+        publisher: Canonical
+        sku: 18.04-LTS
+        version: latest
+
+  - name: 'Create {{ host_vm_name2 }}'
+    azure.azcollection.azure_rm_virtualmachine:
+      name: '{{ host_vm_name2 }}'
+      resource_group: '{{ resourcegroup_name }}'
+      virtual_network_name: '{{ network_name }}'
+      subnet_name: '{{ host_subnet_name }}'
+      public_ip_allocation_method: Dynamic
+      admin_username: '{{ admin_un }}'
+      admin_password: '{{ admin_pw }}'
+      vm_size: Standard_B1s
+      image:
+        offer: UbuntuServer
+        publisher: Canonical
+        sku: 18.04-LTS
+        version: latest
+
+  - name: 'Create {{ host_vm_name3 }}'
+    azure.azcollection.azure_rm_virtualmachine:
+      name: '{{ host_vm_name3 }}'
+      resource_group: '{{ resourcegroup_name }}'
+      virtual_network_name: '{{ network_name }}'
+      subnet_name: '{{ host_subnet_name }}'
+      public_ip_allocation_method: Dynamic
+      admin_username: '{{ admin_un }}'
+      admin_password: '{{ admin_pw }}'
+      vm_size: Standard_B1s
+      image:
+        offer: UbuntuServer
+        publisher: Canonical
+        sku: 18.04-LTS
+        version: latest

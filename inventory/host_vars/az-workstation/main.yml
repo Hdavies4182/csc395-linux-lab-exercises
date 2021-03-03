@@ -1,0 +1,13 @@
+---
+admin_un: '{{ vault_admin_un }}'
+admin_pw: '{{ vault_admin_pw }}'
+resourcegroup_name: ansible-lab
+network_name: ansible-lab-net
+controller_nsg_name: ansible-controller-security
+controller_subnet_name: ansible-controller-subnet
+controller_vm_name: ansible-lab-controller
+host_subnet_name: ansible-host-subnet
+host_nsg_name: ansible-host-security
+host_vm_name1: ansible-lab-host1
+host_vm_name2: ansible-lab-host2
+host_vm_name3: ansible-lab-host3
