@@ -12,6 +12,9 @@
     azure.azcollection.azure_rm_virtualnetwork:
       name: '{{ network_name }}'
       resource_group: '{{ resourcegroup_name }}'
+      dns_servers: 
+      - 1.1.1.1
+      - 1.0.0.1
       purge_address_prefixes: yes
       address_prefixes_cidr: '10.1.0.0/16'
 
@@ -21,7 +24,7 @@
       resource_group: '{{ resourcegroup_name }}'
       purge_rules: yes
       rules:
-      - name: 'AllowSSH'
+      - name: 'AllowAllSSH'
         protocol: Tcp
         source_address_prefix: 0.0.0.0/0
         destination_port_range: 22
@@ -49,7 +52,7 @@
       resource_group: '{{ resourcegroup_name }}'
       purge_rules: yes
       rules:
-      - name: 'AllowSSH'
+      - name: 'AllowControllerSSH'
         protocol: Tcp
         source_address_prefix: 10.1.1.0/29
         destination_port_range: 22
@@ -86,10 +89,36 @@
         publisher: Canonical
         sku: 18.04-LTS
         version: latest
+    register: controller
+
+  - name: 'Add {{ controller_vm_name }} to the azure_controller group'
+    ansible.builtin.add_host:
+      hostname: "{{ controller_vm_name }}"
+      ansible_host: "{{ azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0]. properties.publicIPAddress.properties.ipAddress }}"
+      ansible_user: "{{ admin_un }}"
+      ansible_password: "{{ admin_pw }}"
+      ansible_ssh_private_key_file: /home/draevin/.ssh/draevin-azadmin
+      groupname: azure_controller
+    with_items: controller.instances
+
+  - name: 'Set NSG for controller NIC: {{ azure_vm.properties.networkProfile.networkInterfaces[0].name }}'
+    azure.azcollection.azure_rm_networkinterface:
+      name: '{{ azure_vm.properties.networkProfile.networkInterfaces[0].name }}'
+      resource_group: '{{ resourcegroup_name }}'
+      virtual_network_name: '{{ network_name }}'
+      subnet_name: '{{ controller_subnet_name }}'
+      security_group_name: '{{ controller_nsg_name }}'
+      ip_configurations:
+      - name: '{{ azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].name }}'
+        public_ip_address_name: '{{ azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.name }}'
+        primary: True
+    with_items: controller.instances
 
   - name: 'Create {{ host_vm_name1 }}'
     azure.azcollection.azure_rm_virtualmachine:
       name: '{{ host_vm_name1 }}'
+      state: present
+      # restarted: yes
       resource_group: '{{ resourcegroup_name }}'
       virtual_network_name: '{{ network_name }}'
       subnet_name: '{{ host_subnet_name }}'
@@ -106,6 +135,8 @@
   - name: 'Create {{ host_vm_name2 }}'
     azure.azcollection.azure_rm_virtualmachine:
       name: '{{ host_vm_name2 }}'
+      state: present
+      # restarted: yes
       resource_group: '{{ resourcegroup_name }}'
       virtual_network_name: '{{ network_name }}'
       subnet_name: '{{ host_subnet_name }}'
@@ -122,6 +153,8 @@
   - name: 'Create {{ host_vm_name3 }}'
     azure.azcollection.azure_rm_virtualmachine:
       name: '{{ host_vm_name3 }}'
+      state: present
+      # restarted: yes
       resource_group: '{{ resourcegroup_name }}'
       virtual_network_name: '{{ network_name }}'
       subnet_name: '{{ host_subnet_name }}'
