@@ -85,9 +85,9 @@
       admin_password: '{{ admin_pw }}'
       vm_size: Standard_B1s
       image:
-        offer: UbuntuServer
+        offer: 0001-com-ubuntu-server-focal
         publisher: Canonical
-        sku: 18.04-LTS
+        sku: 20_04-lts
         version: latest
     register: controller
 
@@ -127,9 +127,9 @@
       admin_password: '{{ admin_pw }}'
       vm_size: Standard_B1s
       image:
-        offer: UbuntuServer
+        offer: 0001-com-ubuntu-server-focal
         publisher: Canonical
-        sku: 18.04-LTS
+        sku: 20_04-lts
         version: latest
 
   - name: 'Create {{ host_vm_name2 }}'
@@ -145,9 +145,9 @@
       admin_password: '{{ admin_pw }}'
       vm_size: Standard_B1s
       image:
-        offer: UbuntuServer
+        offer: 0001-com-ubuntu-server-focal
         publisher: Canonical
-        sku: 18.04-LTS
+        sku: 20_04-lts
         version: latest
 
   - name: 'Create {{ host_vm_name3 }}'
@@ -163,7 +163,7 @@
       admin_password: '{{ admin_pw }}'
       vm_size: Standard_B1s
       image:
-        offer: UbuntuServer
+        offer: 0001-com-ubuntu-server-focal
         publisher: Canonical
-        sku: 18.04-LTS
+        sku: 20_04-lts
         version: latest
