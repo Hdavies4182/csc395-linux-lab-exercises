@@ -46,3 +46,5 @@ depending on location. The most specific file available is one in the current di
 when running commands. This config is provided with some appropriate defaults for
 our lab needs. Further details on configuration and scope can be found in the official
 docs section on [Ansible Configuration settings](https://docs.ansible.com/ansible/latest/reference_appendices/config.html)
+
+This is a test
