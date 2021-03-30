@@ -1,0 +1,10 @@
+---
+- name: Configure Ansible controller
+  hosts: lab-controller
+  tasks:
+  - name:  Install Ansible Update
+    ansible.builtin.package:
+      name: ansible
+      state: latest
+
+      
