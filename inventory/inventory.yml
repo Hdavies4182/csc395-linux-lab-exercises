@@ -5,6 +5,8 @@ all:
       ansible_host: localhost
       ansible_connection: local
 
+  children:
+  
     azure-vms:
       hosts:    
         ansible-lab-controller:
