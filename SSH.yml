@@ -1,0 +1,13 @@
+---
+- name: Disable root login
+  hosts: azure-vms
+
+  tasks:
+  - name: Edits SSH file to disable root login
+    ansible.builtin.lineinfile: 
+      dest: /etc/ssh/sshd_config 
+      regexp: "^PermitRootLogin"
+      line: "PermitRootLogin no"
+      state: present
+
+    state: restarted
