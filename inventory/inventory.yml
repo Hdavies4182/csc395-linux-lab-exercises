@@ -1,8 +1,10 @@
 all:
   hosts:
+
     az-workstation:
       ansible_host: localhost
       ansible_connection: local
+
     azure-vms:
       hosts:    
         ansible-lab-controller:
@@ -13,10 +15,12 @@ all:
           ansible_host: 10.1.2.5
         ansible-lab-host3:
           ansible_host: 10.1.2.6
+
     lab-controller:
       hosts:
         ansible-lab-controller:
           ansible_host: 10.1.1.4
+          
     lab-hosts:
       hosts:
         ansible-lab-host1:
