@@ -3,8 +3,21 @@
   hosts: lab-controller
   tasks:
   - name:  Install Ansible Update
+    become: yes
     ansible.builtin.package:
       name: ansible
       state: latest
+
+- name: Install roles
+  hosts: lab-hosts
+  vars:
+    ansible_become: true
+  roles:
+  - role: ansible-hardening
+    vars:
+      stig_version: rhel7
+      security_enable_pwquality_password_set: yes
+      security_password_max_lifetime_days: 90
+
 
       
