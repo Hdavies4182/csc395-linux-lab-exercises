@@ -19,5 +19,14 @@
       security_enable_pwquality_password_set: yes
       security_password_max_lifetime_days: 90
 
+- name: Configure DNS server
+  hosts: ansible-lab-host1
+  tasks:
+  - name: Install dnsmasq
+    ansible.builtin.package:
+      name: dnsmasq
+      state: latest
+
+
 
       
