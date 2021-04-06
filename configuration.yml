@@ -8,19 +8,22 @@
       name: ansible
       state: latest
 
-- name: Install roles
-  hosts: lab-hosts
-  vars:
-    ansible_become: true
-  roles:
-  - role: ansible-hardening
-    vars:
-      stig_version: rhel7
-      security_enable_pwquality_password_set: yes
-      security_password_max_lifetime_days: 90
+# - name: Install roles
+#   hosts: lab-hosts
+#   vars:
+#     ansible_become: true
+#   roles:
+#   - role: ansible-hardening
+#     vars:
+#       stig_version: rhel7
+#       security_enable_pwquality_password_set: yes
+#       security_password_max_lifetime_days: 90
+
 
 - name: Configure DNS server
   hosts: ansible-lab-host1
+  vars:
+    ansible_become: true
   tasks:
   - name: Install dnsmasq
     ansible.builtin.package:
