@@ -34,6 +34,16 @@
       path: /etc/hosts
       regexp: '^10\.1\.2\.4'
       line: '10.1.2.4 {{ ansible_hostname }}'
+  - name: Add Host2
+    lineinfile:
+      path: /etc/hosts
+      regexp: '^10\.1\.2\.5'
+      line: '10.1.2.5 ansible-lab-host2'
+  - name: Add Host3
+    lineinfile:
+      path: /etc/hosts
+      regexp: '^10\.1\.2\.6'
+      line: '10.1.2.6 ansible-lab-host3'
   - name: Disable DNS service
     ansible.builtin.service:
       name: systemd-resolved
