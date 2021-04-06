@@ -24,11 +24,38 @@
   hosts: ansible-lab-host1
   vars:
     ansible_become: true
-  tasks:
+  tasks:  
+
   - name: Install dnsmasq
     ansible.builtin.package:
       name: dnsmasq
       state: latest
+
+  - name: Set local Hostname
+    lineinfile:
+      path: /etc/hosts
+      regexp: '^10\.1\.2\.4'
+      line: '10.1.2.4 {{ ansible_hostname }}'
+
+  - name: Disable DNS service
+    ansible.builtin.service:
+      name: systemd-resolved
+      enabled: no
+      state: stopped
+
+  - name: Set dnsmasq config file
+    ansible.builtin.copy:
+      src: files/dnsmasq.conf
+      dest: /etc/dnsmasq.conf
+      owner: root
+      group: root
+      mode: '0644'
+
+  - name: Restart dnsmasq
+    ansible.builtin.service:
+      name: dnsmasq
+      enabled: yes
+      state: restarted
 
 
 
