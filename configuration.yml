@@ -34,7 +34,6 @@
       path: /etc/hosts
       regexp: '^10\.1\.2\.4'
       line: '10.1.2.4 {{ ansible_hostname }}'
-      state: present
   - name: Disable DNS service
     ansible.builtin.service:
       name: systemd-resolved
