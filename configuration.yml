@@ -71,7 +71,10 @@
       mode: '0644'
 
 - name: Configure hosts to use local DNS
-  hosts: azure-vms
+  hosts: 
+    -ansible-lab-controller
+    -ansible-lab-host2
+    -ansible-lab-host3
   vars:
     ansible_become: true
   tasks:
