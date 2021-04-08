@@ -72,9 +72,9 @@
 
 - name: Configure hosts to use local DNS
   hosts: 
-    -ansible-lab-controller
-    -ansible-lab-host2
-    -ansible-lab-host3
+  - ansible-lab-controller
+  - ansible-lab-host2
+  - ansible-lab-host3
   vars:
     ansible_become: true
   tasks:
