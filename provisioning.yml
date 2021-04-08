@@ -15,6 +15,7 @@
       dns_servers: 
       - 1.1.1.1
       - 1.0.0.1
+      - 10.1.2.4
       purge_address_prefixes: yes
       address_prefixes_cidr: '10.1.0.0/16'
 

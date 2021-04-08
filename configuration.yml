@@ -54,6 +54,7 @@
       name: systemd-resolved
       enabled: no
       state: stopped
+    notify: Restart dnsmasq
   - name: Set dnsmasq config file
     ansible.builtin.copy:
       src: files/dnsmasq.conf
@@ -68,6 +69,8 @@
       owner: root
       group: root
       mode: '0644'
+
+  handlers:
   - name: Restart dnsmasq
     ansible.builtin.service:
       name: dnsmasq
