@@ -70,6 +70,19 @@
       group: root
       mode: '0644'
 
+- name: Configure hosts to use local DNS
+  hosts: azure-vms
+  vars:
+    ansible_become: true
+  tasks:
+  - name: Set resolv.conf nameserver
+    lineinfile:
+      path: /etc/resolv.conf
+      regexp: '^nameserver'
+      line: 'nameserver 10.1.2.4'
+
+  
+
   handlers:
   - name: Restart dnsmasq
     ansible.builtin.service:
