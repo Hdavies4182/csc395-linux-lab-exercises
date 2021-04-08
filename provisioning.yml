@@ -51,9 +51,9 @@
       resource_group: '{{ resourcegroup_name }}'
       purge_rules: yes
       rules:
-      - name: 'AllowControllerSSH'
+      - name: 'AllowSSH'
         protocol: Tcp
-        source_address_prefix: 10.1.1.0/29
+        source_address_prefix: 10.1.0.0/22
         destination_port_range: 22
         access: Allow
         priority: 100
