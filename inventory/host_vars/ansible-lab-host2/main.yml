@@ -1,5 +1,5 @@
 admin_samba_pw: '{{ vault_admin_samba_pw }}'
-admin_un: 'MDHT-azadmin'
+admin_un: 'MDHT'
 
 samba_server_string: 'Ansible Lab File Server'
 samba_workgroup: MDHTfileshare
