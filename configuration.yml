@@ -109,11 +109,11 @@
       state: latest
   - name: Create Credential File
     template:
-    src: .files/.smbpassword
-    dest: /home/{{ admin_un}}/.smbpassword
-    owner: '{{ admin_un }}'
-    group: '{{ admin_un }}'
-    mode: '0600'
+      src: .files/.smbpassword
+      dest: /home/{{ admin_un}}/.smbpassword
+      owner: '{{ admin_un }}'
+      group: '{{ admin_un }}'
+      mode: '0600'
   - name: Add share mount
     mount:
       src: //10.1.2.5/MDHTtestshare
