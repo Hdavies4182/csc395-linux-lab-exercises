@@ -58,6 +58,15 @@
         access: Allow
         priority: 100
         direction: Inbound
+      - name: 'AllowSubnetSamba'
+        protocol: Tcp
+        source_address_prefix: 10.1.2.0/28
+        destination_port_range:
+        - 139
+        - 445
+        access: Allow
+        priority: 102
+        direction: Inbound
       - name: 'DenyAll'
         protocol: Tcp
         source_address_prefix: 0.0.0.0/0

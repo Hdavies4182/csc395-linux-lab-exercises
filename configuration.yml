@@ -82,9 +82,7 @@
     lineinfile:
       path: /etc/resolv.conf
       regexp: '^nameserver'
-      line: 'nameserver 10.1.2.4'
-
-  
+      line: 'nameserver 10.1.2.4'  
 
   handlers:
   - name: Restart dnsmasq
@@ -92,7 +90,39 @@
       name: dnsmasq
       enabled: yes
       state: restarted
+    
+- name: Configure Samba Server
+  hosts: ansible-lab-host2
+  vars:
+    ansible_become: true
+  roles:
+  - bertvv.samba
 
-
-
-      
+- name: Configure Samba Client
+  hosts: ansible-lab-host3
+  vars:
+    ansible_become: true
+  tasks:
+  - name: Install client deps
+    package:
+      name: cifs-utils
+      state: latest
+  - name: Create Credential File
+    template:
+    src: .files/.smbpassword
+    dest: /home/{{ admin_un}}/.smbpassword
+    owner: '{{ admin_un }}'
+    group: '{{ admin_un }}'
+    mode: '0600'
+  - name: Add share mount
+    mount:
+      src: //10.1.2.5/MDHTtestshare
+      path: /mnt/smbshare
+      fstype: cifs
+      opts: credentials=/home/{{ admin_un }}/.smbpassword
+      state: mounted
+  - name: Set mount as writeable
+    file:
+      path: /mnt/smbshare
+      state: directory
+      mode: '0777'

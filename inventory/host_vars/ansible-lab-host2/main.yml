@@ -1,0 +1,15 @@
+admin_samba_pw: '{{ vault_admin_samba_pw }}'
+admin_un: 'MDHT-azadmin'
+
+samba_server_string: 'Ansible Lab File Server'
+samba_workgroup: MDHTfileshare
+samba_users:
+- name: '{{ admin_un }}'
+  password: '{{ admin_samba_pw }}'
+samba_shares_root: /srv/samba
+samba_shares:
+- name: MDHTtestshare
+  valid-users: '{{ admin_un }}'
+  write_list: '{{ admin_un }}'
+  group: '{{ admin_un }}'
+  browseable: 'yes'
