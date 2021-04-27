@@ -138,3 +138,15 @@
           state: started
 
 
+- name: Add custom website
+  hosts: ansible-lab-host3
+  ansible.builtin.copy:
+      src: files/index.nginx-debian.html
+      dest: /var/www/html/index.nginx-debian.html
+      owner: root
+      group: root
+      mode: '0644'
+
+
+
+
