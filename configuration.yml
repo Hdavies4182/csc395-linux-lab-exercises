@@ -126,3 +126,15 @@
       path: /mnt/smbshare
       state: directory
       mode: '0777'
+
+- name: Install nginx
+  hosts: ansible-lab-host3
+  tasks:
+    - name: install nginx
+      apt: name=nginx state=latest
+    - name: start nginx
+      service:
+          name: nginx
+          state: started
+
+
