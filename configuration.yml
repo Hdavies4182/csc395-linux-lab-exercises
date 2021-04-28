@@ -156,6 +156,6 @@
   vars:
     ansible_become: true
   roles:
-    - role: kyl191.openvpn
+    - role: ansible-role-openvpn
       clients:
         - client1
