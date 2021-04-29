@@ -150,12 +150,13 @@
       group: root
       mode: '0644'
 
-- name: Configure Samba Server
+- name: Install OpenVPN
   hosts: ansible-lab-controller
   gather_facts: true
   vars:
     ansible_become: true
+    openvpn_server_hostname: 40.85.144.157
   roles:
     - role: ansible-role-openvpn
-      clients:
-        - client1
+      clients: client1
+
