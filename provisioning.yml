@@ -65,6 +65,13 @@
         access: Allow
         priority: 100
         direction: Inbound
+      - name: 'AllowHTTP'
+        protocol: Tcp
+        source_address_prefix: 10.1.0.0/22
+        destination_port_range: 80
+        access: Allow
+        priority: 101
+        direction: Inbound
       - name: 'AllowSubnetSamba'
         protocol: Tcp
         source_address_prefix: 10.1.2.0/28
